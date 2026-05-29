@@ -16,7 +16,7 @@ scripts used in this paper.
 
 ---
 
-## 🛠️ Re‑creating the Conda environment
+## Re‑creating the Conda environment
 
 ```bash
 # 1. Unpack
@@ -62,7 +62,7 @@ $ pip install stable-baselines3==2.3.2
 # Now you can run the Training and evaluation scripts in the CybORG_plus_plus directory
 ```
 
-## 📌 Getting started in Yawning Titan
+## Getting started in Yawning Titan
 1. Once you've unzipped the code and configured your conda environment, now you can try training a blue agent. <br>
    Navigate to the Reward_Function_Experimentation/Training/parallel_training.py file and find the following lines of code. You can edit these to alter the 
    experiments you'd like to run:
@@ -139,7 +139,7 @@ requires access to the wandb runs associated with each run.
    otherwise 
     edited to save to a different location. <br>
 
-## 📌 Getting started in MiniCAGE
+## Getting started in MiniCAGE
 1. Once you've unzipped the code and configured your conda environment, now you can try training a blue agent in MiniCAGE. <br>
    Navigate to the icml2026_codebase/CybORG_plus_plus/Training/SB3_training.py file and find the following lines of 
    code. You can edit these to alter the 
@@ -199,39 +199,39 @@ requires access to the wandb runs associated with each run.
     
     ```
 
-## 🗄️ Repository layout
+## Repository layout
 
 ```
-icml2026_code/
-├── icml2026_codebase/
-│   ├── __init__.py
-│   ├── CybORG_plus_plus/
-│   │   ├── mini_CAGE/
-│   │   │   ├── __init__.py
-│   │   │   ├── __pycache__/
-│   │   │   ├── agents.py
-│   │   │   ├── minimal.py
-│   │   │   └── rl_red_agent.py
-│   │   ├── rl-reliability-metrics/
-│   │   └── Training/
-│   │       ├── SB3_training.py
-│   │       └── single_agent_gym_wrapper.py
-│   │
-│   └── Reward_Function_Experimentation/
-│       ├── Evaluation/
-│       │   ├── Basic_agent_runthrough.py
-│       │   ├── Reliability_Evaluation.py
-│       │   └── ScoreGT_Evaluation.py
-│       ├── Minimal_network_gamemode.json
-│       ├── Network/
-│       │   └── N_node_generator.py
-│       ├── Training/
-│       │   ├── experiment_runner.py
-│       │   ├── Minimal_network_gamemode.json
-│       │   └── parallel_training.py
-│       ├── Reward_Engineering/
-│       ├── utils.py
-│       └── yawning_titan_run_wandb.py
+
+icml2026_codebase/
+├── __init__.py
+├── CybORG_plus_plus/
+├── mini_CAGE/
+│   │   ├── __init__.py
+│   │   ├── __pycache__/
+│   │   ├── agents.py
+│   │   ├── minimal.py
+│   │   └── rl_red_agent.py
+│   ├── rl-reliability-metrics/
+│   └── Training/
+│       ├── SB3_training.py
+│       └── single_agent_gym_wrapper.py
+│
+└── Reward_Function_Experimentation/
+   ├── Evaluation/
+   │   ├── Basic_agent_runthrough.py
+   │   ├── Reliability_Evaluation.py
+   │   └── ScoreGT_Evaluation.py
+   ├── Minimal_network_gamemode.json
+   ├── Network/
+   │   └── N_node_generator.py
+   ├── Training/
+   │   ├── experiment_runner.py
+   │   ├── Minimal_network_gamemode.json
+   │   └── parallel_training.py
+   ├── Reward_Engineering/
+   ├── utils.py
+   └── yawning_titan_run_wandb.py
 ├── miniCAGE_intel_linux_environment.yml
 ├── miniCAGE_macos_environment.yml
 ├── pyproject.toml
@@ -245,7 +245,7 @@ icml2026_code/
 ---
 
 
-## 👥 Acknowledgements
+## Acknowledgements
 
 * **Yawning Titan** cyber-gym – Dstl, MIT Licence.
   *Original repo:* [YAWNING-TITAN](https://github.com/dstl/YAWNING-TITAN)<br>
