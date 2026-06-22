@@ -1,0 +1,62 @@
+# Dockerfile for Yawning Titan training environment
+# Builds a container that can run all experiments in yawning_titan_training/
+#
+# Build:  docker build -f docker/Dockerfile.yt -t yt-rewards .
+# Run:    docker run --rm -it -v $(pwd)/results:/repo/results yt-rewards
+#         # then inside the container:
+#         cd /repo/yawning_titan_training/Training && python parallel_training.py
+
+FROM python:3.10-slim
+
+WORKDIR /repo
+
+# System deps: git (for rl-reliability-metrics install), build tools
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        git \
+        build-essential \
+        libgl1 \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy the repo contents into the image
+COPY . /repo/
+
+# Install YAWNING-TITAN and its core dependencies.
+# --no-deps avoids pulling the full transitive tree (we manage deps below).
+RUN pip install --no-cache-dir --no-deps -e ./YAWNING-TITAN
+
+# Install the packages actually needed for training (torch, SB3, wandb, etc.)
+# Pinned versions match the conda environments in environments/yt_linux.yml.
+RUN pip install --no-cache-dir \
+    "torch==1.13.1" \
+    "stable-baselines3==1.6.2" \
+    "wandb" \
+    "gym==0.21.0" \
+    "networkx==2.5.1" \
+    "numpy==1.23.4" \
+    "tinydb==4.7.0" \
+    "pyyaml==6.0" \
+    "tensorboard==2.12.3" \
+    "scipy==1.9.2" \
+    "matplotlib==3.6.2" \
+    "pandas==1.3.5" \
+    "platformdirs==2.5.2" \
+    "tqdm" \
+    "typing-extensions==4.4.0"
+
+# Install rl-reliability-metrics from source (not on PyPI in a usable form).
+RUN pip install --no-cache-dir \
+    "tensorflow==2.12.0" \
+    "gin-config==0.5.0" \
+    "absl-py" && \
+    pip install --no-cache-dir --no-deps \
+    "git+https://github.com/google-research/rl-reliability-metrics.git"
+
+# Install the top-level package (makes yawning_titan_training importable if needed)
+RUN pip install --no-cache-dir --no-deps -e .
+
+# Create results directory
+RUN mkdir -p /repo/results
+
+ENV PYTHONUNBUFFERED=1
+
+CMD ["python", "yawning_titan_training/Training/parallel_training.py"]

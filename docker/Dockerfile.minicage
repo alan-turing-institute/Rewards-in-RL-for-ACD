@@ -1,0 +1,50 @@
+# Dockerfile for miniCAGE training environment
+# Builds a container that can run all experiments in mini_cage_training/
+#
+# Build:  docker build -f docker/Dockerfile.minicage -t minicage-rewards .
+# Run:    docker run --rm -it -v $(pwd)/results:/repo/results minicage-rewards
+#         # then inside the container:
+#         cd /repo/mini_cage_training/Training && python SB3_training.py
+
+FROM python:3.10-slim
+
+WORKDIR /repo
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        git \
+        build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY . /repo/
+
+# Install mini_cage_training as the 'CybORG_plus_plus' package (see setup.py).
+RUN pip install --no-cache-dir -e ./mini_cage_training
+
+# Install training dependencies.
+# SB3 2.3.2 is required for miniCAGE (newer than the YT environment).
+RUN pip install --no-cache-dir \
+    "torch" \
+    "stable-baselines3==2.3.2" \
+    "wandb" \
+    "numpy" \
+    "tensorboard" \
+    "scipy" \
+    "matplotlib" \
+    "pandas" \
+    "tqdm" \
+    "gym" \
+    "gymnasium"
+
+# Install rl-reliability-metrics from source
+RUN pip install --no-cache-dir \
+    "tensorflow==2.12.0" \
+    "gin-config==0.5.0" \
+    "absl-py" && \
+    pip install --no-cache-dir --no-deps \
+    "git+https://github.com/google-research/rl-reliability-metrics.git"
+
+RUN mkdir -p /repo/results
+
+ENV PYTHONUNBUFFERED=1
+
+CMD ["python", "mini_cage_training/Training/SB3_training.py"]

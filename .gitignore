@@ -1,0 +1,45 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+*.egg
+dist/
+build/
+.eggs/
+
+# Environments
+.env
+.venv
+env/
+venv/
+
+# Training outputs (don't commit logs/models/results)
+results/
+nohup/
+wandb/
+*.log
+*.out
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# MacOS
+.DS_Store
+.AppleDouble
+
+# IDEs
+.idea/
+.vscode/
+*.swp
+
+# Pytest / coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# TensorBoard
+runs/
+tb_logs/
