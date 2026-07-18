@@ -69,8 +69,6 @@ dependencies:
       - django-cors-headers==3.14.0
       - dm-tree==0.1.7
       - docker-pycreds==0.4.0
-      - -e .
-      - -e ./YAWNING-TITAN
       - entrypoints==0.4
       - exceptiongroup==1.2.2
       - executing==2.2.0
@@ -147,6 +145,7 @@ dependencies:
       - pexpect==4.9.0
       - pillow==11.2.1
       - platformdirs==2.5.2
+      - plotly==5.23.0
       - proglog==0.1.11
       - prometheus-client==0.21.1
       - prompt-toolkit==3.0.51
@@ -385,6 +384,5 @@ dependencies:
       - websocket-client==1.8.0
       - wrapt==1.17.2
       - y-py==0.6.2
-      - yawningtitan==2.0.1
       - ypy-websocket==0.8.4
       - zipp==3.21.0

@@ -152,6 +152,7 @@ dependencies:
       - pexpect==4.9.0
       - pillow==11.1.0
       - platformdirs==2.5.2
+      - plotly==5.23.0
       - proglog==0.1.10
       - prometheus-client==0.21.1
       - prompt-toolkit==3.0.50

@@ -28,7 +28,8 @@ Rewards-in-RL-for-ACD/
 │   ├── Evaluation/
 │   │   ├── Evaluation_score.py      ← per-model evaluation (GT score, CVaR)
 │   │   ├── Confidence_interval.py   ← 95% CIs across agents
-│   │   └── Reliability_Evaluation.py ← IQR reliability metrics (requires W&B)
+│   │   ├── Reliability_Evaluation.py ← IQR reliability metrics (requires W&B)
+│   │   └── utils.py                 ← shared evaluation helpers
 │   └── Networks/
 │       ├── N_node_generator.py      ← linear chain networks (paper main experiments)
 │       └── Diamond_network.py       ← diamond topology (optional)
@@ -68,16 +69,20 @@ docker build -f docker/Dockerfile.yt -t yt-rewards .
 # Interactive shell:
 docker run --rm -it -v $(pwd)/results:/repo/results yt-rewards bash
 # Inside the container, edit the config in parallel_training.py then:
+cd /repo/yawning_titan_training/Training
 python parallel_training.py
 
 # --- miniCAGE experiments ---
 docker build -f docker/Dockerfile.minicage -t minicage-rewards .
 docker run --rm -it -v $(pwd)/results:/repo/results minicage-rewards bash
 # Inside the container:
+cd /repo/mini_cage_training/Training
 python SB3_training.py
 ```
 
-Results are written to `./results/` on your host machine (mounted into the container).
+Results are written to `./results/` on your host machine (mounted into the container):
+Yawning Titan writes to `results/train_log/`, and miniCAGE writes checkpoints to
+`results/PPO_models/` and TensorBoard logs to `results/dqn_mini_cage_tensorboard/`.
 
 ---
 
@@ -108,8 +113,6 @@ pip install --no-deps git+https://github.com/google-research/rl-reliability-metr
 ```bash
 conda env create -f environments/minicage_macos.yml
 conda activate miniCAGE_rewards_macos
-# SB3 2.3.2 is required (newer than what the conda file pins):
-pip install stable-baselines3==2.3.2
 # Install the miniCAGE package so imports resolve correctly:
 pip install -e ./mini_cage_training
 ```
@@ -118,7 +121,6 @@ pip install -e ./mini_cage_training
 ```bash
 conda env create -f environments/minicage_linux.yml
 conda activate miniCAGE_rewards_linux
-pip install stable-baselines3==2.3.2
 pip install -e ./mini_cage_training
 ```
 

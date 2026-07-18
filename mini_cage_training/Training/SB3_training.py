@@ -10,7 +10,6 @@ from datetime import datetime
 from multiprocessing import Process, set_start_method
 from pathlib import Path
 from typing import Optional
-import time
 
 import numpy as np
 import torch
@@ -40,8 +39,14 @@ GAMMA: float = 0.99
 CLIP_RANGE: float = 0.2
 N_EPOCHS: int = 6
 
-SAVE_DIR: Path = Path(f"./PPO_models/{GROUP_NAME}")
-SAVE_DIR.mkdir(exist_ok=True)
+# Write all outputs under <repo_root>/results so they land in the directory the
+# Docker instructions mount. Resolved from this file, so it does not depend on
+# the working directory. Override with the RESULTS_DIR environment variable.
+_REPO_ROOT: Path = Path(__file__).resolve().parent.parent.parent
+OUTPUT_LOCATION: Path = Path(os.environ.get("RESULTS_DIR", _REPO_ROOT / "results"))
+
+SAVE_DIR: Path = OUTPUT_LOCATION / "PPO_models" / GROUP_NAME
+SAVE_DIR.mkdir(parents=True, exist_ok=True)
 
 def make_env(seed: Optional[int] = None):
     """Factory that returns a **monitored** MiniCageBlue env."""
@@ -113,7 +118,7 @@ def train_worker(idx: int):
     # TensorBoard dir
     tb_dir: Optional[str]
     if USE_TENSORBOARD:
-        tb_dir = f"./dqn_mini_cage_tensorboard/run_{idx}"
+        tb_dir = str(OUTPUT_LOCATION / "dqn_mini_cage_tensorboard" / f"run_{idx}")
         os.makedirs(tb_dir, exist_ok=True)
     else:
         # create a temporary directory so SB3 still instantiates the writer
@@ -208,10 +213,6 @@ def train_worker(idx: int):
 
 
 if __name__ == "__main__":
-    # sleep
-    # time.sleep(5400)
-    time.sleep(12600)
-
     try:
         set_start_method("spawn")  # does nothing if already set
     except RuntimeError:

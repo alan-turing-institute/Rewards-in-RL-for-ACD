@@ -23,7 +23,6 @@ dependencies:
       - astunparse==1.6.3
       - certifi==2024.8.30
       - charset-normalizer==3.4.0
-      - cleanrl==1.2.0
       - click==8.1.7
       - cloudpickle==3.1.0
       - contourpy==1.3.0
@@ -42,6 +41,7 @@ dependencies:
       - google-pasta==0.2.0
       - grpcio==1.67.1
       - gym-notices==0.0.8
+      - gymnasium==0.29.1
       - h5py==3.12.1
       - huggingface-hub==0.11.1
       - idna==3.10
@@ -88,10 +88,10 @@ dependencies:
       - scipy==1.14.1
       - sentry-sdk==2.17.0
       - setproctitle==1.3.3
-      - shimmy==2.0.0
       - six==1.16.0
       - smmap==5.0.1
       - stable-baselines==2.10.2
+      - stable-baselines3==2.3.2
       - sympy==1.13.1
       - tensorboard==2.18.0
       - tensorboard-data-server==0.7.2
@@ -104,5 +104,6 @@ dependencies:
       - typing-inspection==0.4.1
       - tzdata==2024.2
       - urllib3==2.2.3
+      - wandb==0.21.0
       - werkzeug==3.0.6
       - wrapt==1.16.0

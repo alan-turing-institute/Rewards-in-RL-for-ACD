@@ -25,7 +25,7 @@ RUN pip install --no-cache-dir -e ./mini_cage_training
 RUN pip install --no-cache-dir \
     "torch" \
     "stable-baselines3==2.3.2" \
-    "wandb" \
+    "wandb==0.21.0" \
     "numpy" \
     "tensorboard" \
     "scipy" \
@@ -47,4 +47,6 @@ RUN mkdir -p /repo/results
 
 ENV PYTHONUNBUFFERED=1
 
-CMD ["python", "mini_cage_training/Training/SB3_training.py"]
+WORKDIR /repo/mini_cage_training/Training
+
+CMD ["python", "SB3_training.py"]

@@ -1,13 +1,9 @@
 import gymnasium as gym
 import numpy as np
 from gymnasium import spaces
-import sys
-sys.path.append("/Users/ebates/PycharmProjects/mini_cage")  # add parent dir to path
-sys.path.append("/home/aicd/Documents/Development")  # add parent dir to path
-sys.path.append("/home/aicd/Documents/Development/mini_cage")  # add parent dir to path
 
-
-
+# The miniCAGE environment is imported as the 'CybORG_plus_plus' package, which is
+# installed by `pip install -e ./mini_cage_training` (see mini_cage_training/setup.py).
 from CybORG_plus_plus.mini_CAGE.minimal import SimplifiedCAGE, HOSTS
 from CybORG_plus_plus.mini_CAGE.agents import Meander_minimal
 from CybORG_plus_plus.mini_CAGE.rl_red_agent import B_line_minimal
