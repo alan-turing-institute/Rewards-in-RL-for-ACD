@@ -29,6 +29,10 @@ logging.basicConfig(level=logging.ERROR, format='%(asctime)s - %(levelname)s - %
 # ═══════════════════════════════════════════════════════════════════
 
 # W&B settings — set your project and entity (team) name here.
+# USE_WANDB toggles Weights & Biases logging on/off. We recommend leaving it on
+# to track your runs (metrics, configs, models); set it to False to train with
+# no W&B account or login (e.g. a quick local trial).
+USE_WANDB = True
 WANDB_PROJECT = "YT-Rewards-in-RL-for-ACD"
 WANDB_ENTITY = ""   # your wandb username or team name; leave blank to use your default
 
@@ -109,7 +113,7 @@ def run_parallel_experiments(n_nodes, reward_function, order, action_set, net_sh
                     trial_name, group_name, EVAL_TYPE, n_nodes, reward_function, N_STEPS,
                     NODE_VULNERABILITY, RED_AGENT_SKILL, timesteps, temp_dir, action_set,
                     hyperparams, order, net_shape, algorithm,
-                    WANDB_PROJECT, WANDB_ENTITY, OUTPUT_LOCATION,
+                    WANDB_PROJECT, WANDB_ENTITY, OUTPUT_LOCATION, USE_WANDB,
                 ),
             )
             processes.append(p)

@@ -39,7 +39,8 @@ from Networks.Diamond_network import GenerateDiamondNetwork
 
 def run_experiment(trial_name, group_name, eval_type, n_nodes, reward_function, n_steps, node_vulnerability,
                    red_agent_skill, n_timesteps, temp_dir, action_space_set, hyperparameters,
-                   order, net_shape, algorithm, wandb_project_name, wandb_entity, output_location):
+                   order, net_shape, algorithm, wandb_project_name, wandb_entity, output_location,
+                   use_wandb=True):
     # Create a per-process copy of the game-mode config so parallel runs don't race.
     config_file_path = os.path.join(temp_dir, f'Minimal_network_gamemode_{reward_function}_{trial_name}.json')
     shutil.copyfile(str(_HERE / 'Minimal_network_gamemode.json'), config_file_path)
@@ -79,14 +80,19 @@ def run_experiment(trial_name, group_name, eval_type, n_nodes, reward_function, 
         f'{n_nodes}_nodes', algorithm, trial_name
     )
 
-    run = wandb.init(
-        name=trial_name,
-        entity=wandb_entity,
-        project=wandb_project_name,
-        sync_tensorboard=True,
-        group=group_name,
-        settings=wandb.Settings(_service_wait=180),
-    )
+    # W&B is recommended for tracking runs, but optional. When use_wandb is
+    # False no run is started; the runner detects the absent run (wandb.run is
+    # None) and skips all W&B logging/callbacks automatically.
+    run = None
+    if use_wandb:
+        run = wandb.init(
+            name=trial_name,
+            entity=wandb_entity,
+            project=wandb_project_name,
+            sync_tensorboard=True,
+            group=group_name,
+            settings=wandb.Settings(_service_wait=180),
+        )
 
     seed = random.randint(0, 1000)
     algorithm_key = str(algorithm).upper()
@@ -134,13 +140,14 @@ def run_experiment(trial_name, group_name, eval_type, n_nodes, reward_function, 
     runner.train()
     runner.save()
 
-    run.finish()
+    if run is not None:
+        run.finish()
 
 
 def run_experiment_with_logging(trial_name, group_name, eval_type, n_nodes, reward_function, n_steps,
                                 node_vulnerability, red_agent_skill, n_timesteps, temp_dir, action_space_set,
                                 hyperparameters, order, net_shape, algorithm,
-                                wandb_project_name, wandb_entity, output_location):
+                                wandb_project_name, wandb_entity, output_location, use_wandb=True):
     try:
         logging.info(f"Running experiment: {trial_name}")
         run_experiment(
@@ -162,6 +169,7 @@ def run_experiment_with_logging(trial_name, group_name, eval_type, n_nodes, rewa
             wandb_project_name=wandb_project_name,
             wandb_entity=wandb_entity,
             output_location=output_location,
+            use_wandb=use_wandb,
         )
         logging.info(f"Experiment {trial_name} completed successfully.")
     except Exception as e:

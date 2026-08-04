@@ -131,6 +131,7 @@ pip install -e ./mini_cage_training
 1. **Edit the config** at the top of `yawning_titan_training/Training/parallel_training.py`:
 
    ```python
+   USE_WANDB     = True                  # Weights & Biases logging on/off
    WANDB_PROJECT = "your-project-name"   # your W&B project
    WANDB_ENTITY  = "your-wandb-entity"   # your W&B username or team
 
@@ -143,6 +144,11 @@ pip install -e ./mini_cage_training
    ALGO              = ["PPO"]            # "PPO" or "DQN"
    NO_RUNS           = 10                 # independent seeds per config
    ```
+
+   **Weights & Biases** logging is controlled by `USE_WANDB`. We recommend
+   leaving it on to track your runs (metrics, configs, and saved models) — run
+   `wandb login` (or set `WANDB_API_KEY`) once beforehand. Set `USE_WANDB = False`
+   to train without a W&B account or login, e.g. for a quick local trial.
 
 2. **Run training** from the `Training/` directory:
 

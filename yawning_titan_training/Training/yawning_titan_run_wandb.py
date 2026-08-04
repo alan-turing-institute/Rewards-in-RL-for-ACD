@@ -958,8 +958,14 @@ class YawningTitanRun:
 
             # GTScore + std_reward logged from training episodes; no separate
             # EvalCallback needed (saves ~50k redundant env steps per run).
-            self.callbacks = [WandbCallback(), custom_eval_callback,
-                              gtScore_callback, ent_coeff_callback]
+            self.callbacks = [custom_eval_callback, gtScore_callback,
+                              ent_coeff_callback]
+
+            # Only attach the W&B callback when a run is active (i.e. the caller
+            # called wandb.init). WandbCallback asserts wandb.run is not None, so
+            # this keeps training working when W&B logging is turned off.
+            if wandb.run is not None:
+                self.callbacks.insert(0, WandbCallback())
 
     def train(self) -> Union[PPO, None]:
         """
