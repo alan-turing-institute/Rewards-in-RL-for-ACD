@@ -5,16 +5,15 @@ This is the codebase that accompanies the ICML 2026 paper:
 <h4 align="center"><em><a href="https://arxiv.org/pdf/2602.04809">“Beyond Rewards in Reinforcement Learning for Cyber Defence.”</a></em></h4>
 
 
-The work explores how different reward‐function designs affect **Autonomous Cyber‑Defence (ACD)** agents trained in 
-the **[Yawning Titan](https://github.com/dstl/YAWNING-TITAN)** (YT) cyber‑gym
-and the **[MiniCAGE](https://github.com/alan-turing-institute/CybORG_plus_plus/tree/main/mini_CAGE)** environment from the 
-CybORG++ toolkit.
+The work explores the impact of reward function structure on learning and policy behavioural characteristics of 
+**Autonomous Cyber‑Defence (ACD)** agents.
 
-This repository contains the training and evaluation code used to run all experiments in the paper, covering two 
-aforementioned cyber-defence environments:
+This repository contains the training and evaluation code used to run all experiments in the paper, covering two cyber-defence environments:
 
-- **Yawning Titan (YT)** - an abstract, graph-based cyber-security simulation developed by Dstl.
-- **miniCAGE** - a lightweight wrapper around the CybORG++ environment developed at the Alan Turing Institute.
+- **[Yawning Titan](https://github.com/dstl/YAWNING-TITAN)** (YT) - An abstract, graph-based cyber-security 
+  simulation developed by Dstl.
+- **[miniCAGE](https://github.com/alan-turing-institute/CybORG_plus_plus/tree/main/mini_CAGE)** - A lightweight 
+  wrapper around the CybORG++ environment developed at the Alan Turing Institute.
 
 ---
 
