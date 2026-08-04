@@ -25,7 +25,7 @@ class NetworkQuery(YawningTitanQuery):
 
     @staticmethod
     def num_of_nodes(n: int) -> YawningTitanQuery:
-        """Returns all Network with n number of nodes.
+        """Returns all Networks with n number of nodes.
 
         :Example:
 
@@ -34,13 +34,13 @@ class NetworkQuery(YawningTitanQuery):
         >>> networks = db.search(NetworkQuery.num_of_nodes(18))
 
         :param n: The target number of nodes in a Network.
-        :return: A list of Network.
+        :return: A list of Networks.
         """
         return YawningTitanQuery()["nodes"].len_eq(n)
 
     @staticmethod
     def num_of_nodes_between(min: int, max: int) -> YawningTitanQuery:
-        """Returns all Network with between `min` and `max` number of nodes.
+        """Returns all Networks with between `min` and `max` number of nodes.
 
         :Example:
 
@@ -50,7 +50,7 @@ class NetworkQuery(YawningTitanQuery):
 
         :param min: The minimum number of nodes in a Network.
         :param max: The maximum number of nodes in a Network.
-        :return: A list of Network.
+        :return: A list of Networks.
         """
         return YawningTitanQuery()["nodes"].len_bt(min, max)
 
@@ -81,7 +81,7 @@ class NetworkQuery(YawningTitanQuery):
     @staticmethod
     def num_of_entry_nodes(n: int) -> YawningTitanQuery:
         """
-        Returns all Network with n number of entry nodes.
+        Returns all Networks with n number of entry nodes.
 
         :Example:
 
@@ -97,7 +97,7 @@ class NetworkQuery(YawningTitanQuery):
     @staticmethod
     def num_of_entry_nodes_between(min: int, max: int) -> YawningTitanQuery:
         """
-        Returns all Network with between `min` and `max` number of entry nodes.
+        Returns all Networks with between `min` and `max` number of entry nodes.
 
         :Example:
 
@@ -113,7 +113,7 @@ class NetworkQuery(YawningTitanQuery):
     @staticmethod
     def num_of_high_value_nodes(n: int) -> YawningTitanQuery:
         """
-        Returns all Network with n number of high_value nodes.
+        Returns all Networks with n number of high_value nodes.
 
         :Example:
 
@@ -130,7 +130,7 @@ class NetworkQuery(YawningTitanQuery):
     @staticmethod
     def num_of_high_value_nodes_between(min: int, max: int) -> YawningTitanQuery:
         """
-        Returns all Network with between `min` and `max` number of high value nodes.
+        Returns all Networks with between `min` and `max` number of high value nodes.
 
         :Example:
 

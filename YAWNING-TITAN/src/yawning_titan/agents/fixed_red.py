@@ -1,10 +1,12 @@
 import logging
 import random
+from yawning_titan.envs.generic.core.red_interface import RedInterface
+from yawning_titan.envs.generic.core.network_interface import NetworkInterface
 
 logger = logging.getLogger(__name__)
 
 
-class FixedRedAgent:
+class FixedRedAgent(RedInterface):
     """
     The `FixedRegAgent` provides the red activity for the FourNodeEnv specific environment.
 
@@ -26,6 +28,8 @@ class FixedRedAgent:
         self.one_shot_exploits = initial_no_of_zero_days
         self.exploit_capability_dev = exploit_capability_dev
         self.exploit_dev_progress = 0
+
+        super().__init__()
 
     def select_action(self, uncompromised_nodes, compromised_nodes):
         """
@@ -118,3 +122,13 @@ class FixedRedAgent:
         if able_to_move and red_action == 2:
             logger.debug(f"Red Team: Moved to target {target + 1}")
             self.update_location(target, self.red_current_node)
+
+    def reset(self):
+        """Reset per-episode state for FixedRedAgent."""
+        self.exploit_dev_progress = 0
+        # If RedInterface implements reset, call it too.
+        try:
+            super().reset()
+        except AttributeError:
+            pass
+        return None

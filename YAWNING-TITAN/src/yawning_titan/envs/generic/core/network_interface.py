@@ -19,6 +19,12 @@ from yawning_titan.networks.node import Node
 
 _LOGGER = getLogger(__name__)
 
+import logging
+_logger = logging.getLogger("yt.env")
+logging.getLogger("yt.env").disabled = True
+# Optional: you can configure this once in your main training runner or script
+# logging.basicConfig(filename="yt_env.log", level=logging.INFO)
+
 
 class NetworkInterface:
     """The primary interface between both red and blue agents and the underlying environment."""
@@ -36,6 +42,7 @@ class NetworkInterface:
         self.current_graph: Network = network
 
         self.random_seed = self.game_mode.miscellaneous.random_seed.value
+        self._current_red_skill = None
 
         # initialise the base graph
         self.base_graph = copy.deepcopy(self.current_graph)
@@ -54,6 +61,7 @@ class NetworkInterface:
         self.initialise_edge_map()
 
         self.red_current_location: Node = None
+
 
         # a list of all of the failed attacks that occurred on this turn
         self.true_attacks = []
@@ -326,10 +334,18 @@ class NetworkInterface:
                 nodes = list(nodes.values())
                 nodes = np.pad(nodes, (0, open_spaces), "constant")
 
-        # gets the skill of the red agent
+        # # gets the skill of the red agent
+        # skill = []
+        # if self.game_mode.observation_space.red_agent_skill.value:
+        #     skill = [self.game_mode.red.agent_attack.skill.value.value]
+
+        # gets the skill of the red agent (use per-episode sampled value if present)
         skill = []
         if self.game_mode.observation_space.red_agent_skill.value:
-            skill = [self.game_mode.red.agent_attack.skill.value.value]
+            val = getattr(self, "_current_red_skill", None)
+            if val is None:
+                val = self.game_mode.red.agent_attack.skill.value.value
+            skill = [0.0 if val is None else float(val)]
 
         # combines all of the env observations together to create the observation that the blue agent gets
         obs = np.concatenate(
@@ -526,6 +542,16 @@ class NetworkInterface:
         # resets the network graph from the saved base graph
         self.current_graph = copy.deepcopy(self.initial_base_graph)
         self.base_graph = copy.deepcopy(self.initial_base_graph)
+
+        # Randomise red skill each episode if not fixed in the config:
+        cfg_val = self.game_mode.red.agent_attack.skill.value.value
+        if cfg_val is None:
+            self._current_red_skill = round(random.uniform(0.2, 0.8), 1)
+            _logger.info(f"Episode red skill (sampled): {self._current_red_skill}")
+        else:
+            # honor a fixed skill from the config
+            self._current_red_skill = float(cfg_val)
+            _logger.info(f"Episode red skill (from config): {self._current_red_skill}")
 
         # resets the edge map to match the new current graph
         self.initialise_edge_map()
@@ -795,12 +821,24 @@ class NetworkInterface:
         #     defence = 1 - node.vulnerability_score
         # else:
         #     defence = 0
+        #
+        # # choose effective skill
         # if not use_skill:
-        #     skill = 1
+        #     eff_skill = 1.0
+        # else:
+        #     if skill is not None:
+        #         eff_skill = float(skill)
+        #     elif self._current_red_skill is not None:
+        #         eff_skill = float(self._current_red_skill)
+        #     else:
+        #         # fallback: use config if present, else 1.0
+        #         cfg = self.game_mode.red.agent_attack.skill.value.value
+        #         eff_skill = float(cfg) if cfg is not None else 1.0
+        #     eff_skill = max(0.0, min(1.0, eff_skill))
+        #
+        # attack_score = ((eff_skill * eff_skill) / (eff_skill + defence)) * 100.0
         #
         # # calculate the attack score, the higher the score the more likely the attack is to succeed
-        # attack_score = ((skill * skill) / (skill + defence)) * 100
-        # # check if the attack hits based on the attack score
         #
         # if guarantee or (attack_score > random.randint(0, 100)):
         #     node.true_compromised_status = 1
@@ -809,6 +847,7 @@ class NetworkInterface:
         # else:
         #     return False
 
+        # Liz previous code, kept for reference
         # check if vulnerability and score are being used. If they are not then select a value
         if use_vulnerability:
             defense = 1 - node.vulnerability_score

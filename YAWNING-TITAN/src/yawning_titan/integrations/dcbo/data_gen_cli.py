@@ -1,7 +1,7 @@
 """
 Data Generation CLI for DCBO.
 
-This file contains a short CLI and the associated code for generating data for downstream Training of
+This file contains a short CLI and the associated code for generating data for downstream training of
 Dynamic Casual Bayesian Optimisation (DCBO).
 """
 

@@ -82,6 +82,7 @@ def standard_rewards(args: dict) -> float:
         "make_node_safe": 0.5,
         "scan": 0,
         "isolate": 1,
+        "place_decoy": 0.5,
         "connect": 0,
         "do_nothing": -0.5,
         "add_deceptive_node": 8,
@@ -592,7 +593,7 @@ def simple_pos_neg(args: dict) -> float:
 
     return reward
 
-def scaffolded(args: dict) -> float:
+def dense_negative(args: dict) -> float:
     """
     A reward function that penalizes the blue agent based on the number of compromised nodes.
 
@@ -796,7 +797,7 @@ def costly_scaffolded(args: dict) -> float:
 
     return reward
 
-def complex_dense(args: dict) -> float:
+def complex_dense_negative(args: dict) -> float:
     """
     Calculate the reward for the current state of the environment.
 
@@ -834,9 +835,196 @@ def complex_dense(args: dict) -> float:
 
     reward = -action_cost[blue_action]
 
-    # punish agent for every node that red has successfully compromised (scaffolded/dense rew function)
+    # punish agent for every node that red has successfully compromised (dense_negative/dense rew function)
     no_red_nodes_compromised = sum(end_state.values())
     reward += -no_red_nodes_compromised
+
+    return reward
+
+def simple_positive_ablation_0(args: dict) -> float:
+    """"Replicate reward delta of SP but don't use positive reward polarity"""
+    # Get information about the current state of the environment
+    network_interface: NetworkInterface = args["network_interface"]
+    blue_action = args["blue_action"]
+    start_state = args["start_state"]
+    end_state = args["end_state"]
+    start_vulnerabilities = args["start_vulnerabilities"]
+    end_vulnerabilities = args["end_vulnerabilities"]
+    start_isolation = args["start_isolation"]
+    end_isolation = args["end_isolation"]
+    start_blue = args["start_blue"]
+    end_blue = args["end_blue"]
+
+    total_red_nodes = sum(end_state.values())
+    if total_red_nodes == 0:
+        reward = 0
+    else:
+        reward = -1
+
+    return reward
+
+def simple_positive_ablation_1(args: dict) -> float:
+    """"Replicate reward delta of SP but don't use positive reward polarity"""
+    """Fix episodic-reward shift (from 1 in SP to 100 in ablation_0)"""
+    # Get information about the current state of the environment
+    network_interface: NetworkInterface = args["network_interface"]
+    blue_action = args["blue_action"]
+    start_state = args["start_state"]
+    end_state = args["end_state"]
+    start_vulnerabilities = args["start_vulnerabilities"]
+    end_vulnerabilities = args["end_vulnerabilities"]
+    start_isolation = args["start_isolation"]
+    end_isolation = args["end_isolation"]
+    start_blue = args["start_blue"]
+    end_blue = args["end_blue"]
+
+    total_red_nodes = sum(end_state.values())
+    if total_red_nodes == 0:
+        reward = 0
+    else:
+        reward = -0.01
+
+    return reward
+
+def simple_positive_ablation_2(args: dict) -> float:
+    """"Replicate reward delta of SP but don't use positive reward polarity"""
+    """Fix episodic-reward shift (from 1 in SP to 100 in ablation_0)"""
+    """Fix... ?"""
+    # Get information about the current state of the environment
+    network_interface: NetworkInterface = args["network_interface"]
+    blue_action = args["blue_action"]
+    start_state = args["start_state"]
+    end_state = args["end_state"]
+    start_vulnerabilities = args["start_vulnerabilities"]
+    end_vulnerabilities = args["end_vulnerabilities"]
+    start_isolation = args["start_isolation"]
+    end_isolation = args["end_isolation"]
+    start_blue = args["start_blue"]
+    end_blue = args["end_blue"]
+
+    total_red_nodes = sum(end_state.values())
+    if total_red_nodes == 0:
+        reward = 0
+    else:
+        reward = -0.005
+
+    return reward
+
+def simple_positive_ablation_4(args: dict) -> float:
+    """"Return to affine transformation (-1) of SP but change title for tracking"""
+    """Used in conjunction with modified critic bias"""
+    # Get information about the current state of the environment
+    network_interface: NetworkInterface = args["network_interface"]
+    blue_action = args["blue_action"]
+    start_state = args["start_state"]
+    end_state = args["end_state"]
+    start_vulnerabilities = args["start_vulnerabilities"]
+    end_vulnerabilities = args["end_vulnerabilities"]
+    start_isolation = args["start_isolation"]
+    end_isolation = args["end_isolation"]
+    start_blue = args["start_blue"]
+    end_blue = args["end_blue"]
+
+    total_red_nodes = sum(end_state.values())
+    if total_red_nodes == 0:
+        reward = 0
+    else:
+        reward = -1
+
+    return reward
+
+def simple_positive_ablation_5(args: dict) -> float:
+    """"Return to affine transformation (-1) of SP but change title for tracking"""
+    """Used in conjunction with modified critic bias"""
+    # Get information about the current state of the environment
+    network_interface: NetworkInterface = args["network_interface"]
+    blue_action = args["blue_action"]
+    start_state = args["start_state"]
+    end_state = args["end_state"]
+    start_vulnerabilities = args["start_vulnerabilities"]
+    end_vulnerabilities = args["end_vulnerabilities"]
+    start_isolation = args["start_isolation"]
+    end_isolation = args["end_isolation"]
+    start_blue = args["start_blue"]
+    end_blue = args["end_blue"]
+
+    total_red_nodes = sum(end_state.values())
+    if total_red_nodes == 0:
+        reward = 0
+    else:
+        reward = -1
+
+    return reward
+
+
+def sp_sweep_c_neg050(args: dict) -> float:
+    """Constant-shifted SP: R(safe) = +1.5, R(comp) = +0.5  (c = -0.5)."""
+    return 1.5 if sum(args["end_state"].values()) == 0 else 0.5
+
+
+def sp_sweep_c_000(args: dict) -> float:
+    """Constant-shifted SP: R(safe) = +1.0, R(comp) = 0.0  (c = 0, identical to simple_positive)."""
+    return 1.0 if sum(args["end_state"].values()) == 0 else 0.0
+
+
+def sp_sweep_c_050(args: dict) -> float:
+    """Constant-shifted SP: R(safe) = +0.5, R(comp) = -0.5  (c = +0.5)."""
+    return 0.5 if sum(args["end_state"].values()) == 0 else -0.5
+
+
+def sp_sweep_c_100(args: dict) -> float:
+    """Constant-shifted SP: R(safe) = 0.0, R(comp) = -1.0  (c = +1.0)."""
+    return 0.0 if sum(args["end_state"].values()) == 0 else -1.0
+
+
+def sp_sweep_c_150(args: dict) -> float:
+    """Constant-shifted SP: R(safe) = -0.5, R(comp) = -1.5  (c = +1.5)."""
+    return -0.5 if sum(args["end_state"].values()) == 0 else -1.5
+
+
+def dense_positive(args: dict) -> float:
+    """
+    Dense positive reward function: +1 per node not compromised.
+
+    Provides the blue agent with a positive reward equal to the number of
+    safe (uncompromised) nodes at the end of the turn. This is the positive
+    mirror of the dense negative reward, encouraging the agent to maximise
+    the number of nodes kept out of red's control on every step.
+
+    Args:
+        args (dict): A dictionary containing information about the current state of the environment.
+            The dictionary contains the following keys:
+                - network_interface: Interface with the network.
+                - blue_action: The action taken by the blue agent in the current turn.
+                - start_state: The state of nodes before the blue agent’s action.
+                - end_state: The state of nodes after the blue agent’s action.
+                - start_vulnerabilities: The vulnerabilities before the blue agent’s action.
+                - end_vulnerabilities: The vulnerabilities after the blue agent’s action.
+                - start_isolation: The isolation status of nodes at the start of the turn.
+                - end_isolation: The isolation status of nodes at the end of the turn.
+                - start_blue: The view of the environment by the blue agent before their turn.
+                - end_blue: The view of the environment by the blue agent after their turn.
+
+    Returns:
+        float: The reward for the blue agent. Returns the negative of the total number of
+        compromised nodes (controlled by the red agent).
+    """
+    network_interface: NetworkInterface = args["network_interface"]
+    blue_action = args["blue_action"]
+    start_state = args["start_state"]
+    end_state = args["end_state"]
+    start_vulnerabilities = args["start_vulnerabilities"]
+    end_vulnerabilities = args["end_vulnerabilities"]
+    start_isolation = args["start_isolation"]
+    end_isolation = args["end_isolation"]
+    start_blue = args["start_blue"]
+    end_blue = args["end_blue"]
+
+    total_nodes = len(end_state)
+    total_red_nodes = sum(end_state.values())
+    total_safe_nodes = total_nodes - total_red_nodes
+
+    reward = total_safe_nodes
 
     return reward
 

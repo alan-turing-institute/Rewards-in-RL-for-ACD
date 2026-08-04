@@ -18,7 +18,7 @@ def _clean_up_pre_v2_0_0():
     - ~/yawning_titan/notebooks/Using the Network DB.ipynb
     - ~/yawning_titan/notebooks/Using YawningTitanRun.ipynb
     - ~/yawning_titan/notebooks/sb3/End to End Generic Env Example - Env Creation, Agent Train and Agent Rendering.ipynb
-    - ~/yawning_titan/notebooks/sb3/Using an Evaluation Callback to monitor progress during Training.ipynb
+    - ~/yawning_titan/notebooks/sb3/Using an Evaluation Callback to monitor progress during training.ipynb
 
     Directories that are deleted are:
 
@@ -31,7 +31,7 @@ def _clean_up_pre_v2_0_0():
         "Using the Network DB.ipynb",
         "Using YawningTitanRun.ipynb",
         "sb3/End to End Generic Env Example - Env Creation, Agent Train and Agent Rendering.ipynb",
-        "sb3/Using an Evaluation Callback to monitor progress during Training.ipynb",
+        "sb3/Using an Evaluation Callback to monitor progress during training.ipynb",
     ]
 
     user_notebooks_dir = Path.home() / "yawning_titan" / "notebooks"

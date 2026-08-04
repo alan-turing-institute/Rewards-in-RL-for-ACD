@@ -56,22 +56,22 @@ if __name__ == "__main__":
         "-l",
         choices=["gif", "standard"],
         default="standard",
-        help="Which non-Training loop to use. Render/Gif output or no output",
+        help="Which non-training loop to use. Render/Gif output or no output",
     )
     """
-        '--Training-period' - Need to look at how to make this make more sense. There are differences between Stable Baselines 3 and Rllib that make this annoying.
-        Stable Baselines 3 use timesteps to determine Training length. Ray's Rllib on the other hand uses number of Training episodes to determine
-        Training legnths.
+        '--training-period' - Need to look at how to make this make more sense. There are differences between Stable Baselines 3 and Rllib that make this annoying.
+        Stable Baselines 3 use timesteps to determine training length. Ray's Rllib on the other hand uses number of training episodes to determine
+        training legnths.
 
         This means that using 10000 as an input gives two widely different results. Sb3 would do 10,000 timesteps which is not alot but
         Rllib would do 10,000 each of which could be up to the terminal state of the environment.
     """
     parser.add_argument(
-        "--Training-period",
+        "--training-period",
         "-tt",
         type=int,
         required=True,
-        help="Length of agent Training period",
+        help="Length of agent training period",
     )
     parser.add_argument(
         "--algo-backend",

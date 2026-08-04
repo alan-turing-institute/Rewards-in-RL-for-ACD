@@ -1,0 +1,36 @@
+version: "3.9"
+
+# Build and run training containers.
+#
+#   docker compose build yt           # build Yawning Titan image
+#   docker compose run  yt            # launch an interactive YT training shell
+#
+#   docker compose build minicage     # build miniCAGE image
+#   docker compose run  minicage      # launch an interactive miniCAGE training shell
+#
+# Results are written to ./results/ on the host (mounted at /repo/results inside the container).
+
+services:
+  yt:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.yt
+    image: yt-rewards
+    volumes:
+      - ../results:/repo/results
+    stdin_open: true
+    tty: true
+    working_dir: /repo/yawning_titan_training/Training
+    command: ["bash"]   # override to run interactively; see Dockerfile.yt CMD for the default
+
+  minicage:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.minicage
+    image: minicage-rewards
+    volumes:
+      - ../results:/repo/results
+    stdin_open: true
+    tty: true
+    working_dir: /repo/mini_cage_training/Training
+    command: ["bash"]

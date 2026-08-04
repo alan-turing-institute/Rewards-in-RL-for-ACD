@@ -43,7 +43,7 @@ def train_and_eval(
     Args:
         agent_name: the algorithm name (str)
         environment: An initlaised Open AI Gym environment
-        training_timesteps: total no. of Training timesteps (int)
+        training_timesteps: total no. of training timesteps (int)
 
     Returns:
         chosen_agent: a trained Stable Baselines 3 agent

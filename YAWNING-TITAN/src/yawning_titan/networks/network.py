@@ -397,7 +397,7 @@ class Network(nx.Graph):
                     warnings.warn(
                         UserWarning(
                             f"Entry nodes and high value nodes intersect at node "
-                            f"'{node_str}', and may cause the Training to end "
+                            f"'{node_str}', and may cause the training to end "
                             f"prematurely."
                         )
                     )
@@ -551,7 +551,7 @@ class Network(nx.Graph):
 
     def reset_random_high_value_nodes(self):
         """
-        Sets up the high value nodes (HVNs) to be used by the Training environment.
+        Sets up the high value nodes (HVNs) to be used by the training environment.
 
         If HVNs are supplied in the `Network`, they are used. However, if they are not supplied, the following
         logic is applied:

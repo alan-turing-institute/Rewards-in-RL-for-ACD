@@ -33,13 +33,13 @@ def train_ppo(dl_backend: str, training_timesteps: int):
 
     Args:
         dl_backend: The deep learning backend to be used (str)
-        training_timesteps: number of Training timesteps for the agent
+        training_timesteps: number of training timesteps for the agent
 
     Returns:
         trainer: A trained Rllib agent
 
     Notes: There seems to be some terminology conflicts across Sb3 and Rllib.
-    Rllib uses Training-timesteps in the same way sb3 uses episode counts.
+    Rllib uses training-timesteps in the same way sb3 uses episode counts.
     """
     ray.init()
     configs = ppo.DEFAULT_CONFIG.copy()
@@ -62,7 +62,7 @@ def train_impala(dl_backend: str, training_timesteps: int):
 
     Args:
         dl_backend: The deep learning backend to be used (str)
-        training_timesteps: number of Training timesteps for the agent
+        training_timesteps: number of training timesteps for the agent
 
     Returns:
         trainer: A trained Rllib agent

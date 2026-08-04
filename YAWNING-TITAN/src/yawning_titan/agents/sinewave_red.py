@@ -76,6 +76,7 @@ class SineWaveRedAgent(RedInterface):
 
         # calculate the number of attacks that the red agent will get this go
         number_runs = calculate_number_moves(current_strength)
+        number_runs = max(1, number_runs)
 
         if self.network_interface.game_mode.red.action_set.spread.use.value:
             current_turn_attack_info[action_counter] = self.natural_spread()
@@ -152,7 +153,40 @@ class SineWaveRedAgent(RedInterface):
             for node in l_nodes
         ]
 
+        if not current_turn_attack_info:
+            try:
+                # If move is available, use that as a behaviourally neutral fallback
+                current_turn_attack_info[0] = self.random_move()
+            except Exception:
+                # Absolute minimal do-nothing payload with the keys the env expects
+                current_turn_attack_info[0] = {
+                    "Action": "do_nothing",
+                    "Attacking_Nodes": [],
+                    "Target_Nodes": [],
+                    "Successes": [False],
+                    "Natural_Spreading_Attacks": [],
+                }
+
         self.network_interface.update_stored_attacks(
             all_attacking, all_target, all_success
         )
+
         return current_turn_attack_info
+
+    def reset(self):
+        """Reset per-episode state for SineWaveRedAgent."""
+        # Typical sine scheduler state; safe even if unused.
+        for attr, value in [
+            ("t", 0),
+            ("_t", 0),
+            ("phase", 0.0),
+            ("_phase", 0.0),
+            ("step", 0),
+            ("_step", 0),
+        ]:
+            setattr(self, attr, value)
+        try:
+            super().reset()
+        except AttributeError:
+            pass
+        return None

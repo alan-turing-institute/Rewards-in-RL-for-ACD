@@ -118,7 +118,7 @@ class RunForm(django_forms.Form):
 
     @property
     def training_fields(self):
-        """The fields of the form related to agent Training."""
+        """The fields of the form related to agent training."""
         return [
             f
             for f in self

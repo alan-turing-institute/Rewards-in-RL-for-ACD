@@ -33,7 +33,7 @@ def reset_db(rebuild: bool = False):
     Force a reset of the default entries in the NetworkDB and GameModeDB.
 
     :param rebuild: If True, completely rebuild the DB, removing all custom
-        Network and GameModes. Default value is False.
+        Networks and GameModes. Default value is False.
     """
     from yawning_titan.utils import reset_network_and_game_mode_db_defaults
 

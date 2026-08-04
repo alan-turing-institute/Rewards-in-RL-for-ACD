@@ -23,7 +23,7 @@ from yawning_titan.envs.generic.generic_env import GenericNetworkEnv
 
 
 class ActionLoop:
-    """A class that represents different post-Training action loops for agents."""
+    """A class that represents different post-training action loops for agents."""
 
     def __init__(self, env, agent, filename=None, episode_count=None):
         """

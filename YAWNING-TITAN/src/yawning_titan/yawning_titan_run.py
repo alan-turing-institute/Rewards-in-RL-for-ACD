@@ -37,7 +37,7 @@ _LOGGER = getLogger(__name__)
 
 class YawningTitanRun:
     """
-    The ``YawningTitanRun`` class is the run class for Training YT agents from a given set of parameters.
+    The ``YawningTitanRun`` class is the run class for training YT agents from a given set of parameters.
 
     The ``YawningTitanRun`` class can be used 'straight out of the box', as all params have default values.
 
@@ -65,8 +65,8 @@ class YawningTitanRun:
     .. todo::
 
         - Build a reporting functionality that captures all logs and eval and generates a PDF report.
-        - Add multiple Training runs functionality for the same agent.
-        - Add the ability to load a saved agent and continue Training it.
+        - Add multiple training runs functionality for the same agent.
+        - Add the ability to load a saved agent and continue training it.
     """
 
     def __init__(
@@ -218,7 +218,7 @@ class YawningTitanRun:
         """
         Performs a setup of the ``NetworkInterface``, ``GenericNetworkEnv``, ``PPO`` algorithm.
 
-        The setup needs to be performed before Training can occur.
+        The setup needs to be performed before training can occur.
 
         :param new: If True, a new instance of PPO is generated. If False, a ppo_zip_path must be passed tooo.
         :param ppo_zip_path: Optional path to a saved ppo.zip file. Required if new = False.
@@ -295,7 +295,7 @@ class YawningTitanRun:
         :return: The trained instance of ``stable_baselines3.ppo.ppo.PPO``.
         """
         if self.env and self.agent and self.eval_callback:
-            self.logger.debug(f"YT run  {self.uuid}: Performing agent Training")
+            self.logger.debug(f"YT run  {self.uuid}: Performing agent training")
             for i in range(self.training_runs):
                 self.agent.learn(
                     total_timesteps=self.total_timesteps,
@@ -307,7 +307,7 @@ class YawningTitanRun:
                 self.env.reset()
                 self.logger.debug(f"YT run  {self.uuid}: GenericNetworkEnv reset")
 
-            self.logger.debug(f"YT run  {self.uuid}: Agent Training complete")
+            self.logger.debug(f"YT run  {self.uuid}: Agent training complete")
             return self.agent
         else:
             self.logger.error(

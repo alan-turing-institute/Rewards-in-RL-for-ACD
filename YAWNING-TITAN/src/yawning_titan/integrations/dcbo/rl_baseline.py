@@ -2,7 +2,7 @@
 Generates a Reinforcement Learning (RL) baseline agent.
 
 Uses the same network and scenario config as used to generated DCBO data and
-saves Training metrics to tensorboard.
+saves training metrics to tensorboard.
 
 .. warning::
 

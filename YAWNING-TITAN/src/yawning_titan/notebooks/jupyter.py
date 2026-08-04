@@ -29,7 +29,7 @@ def reset_default_jupyter_notebooks(overwrite_existing: bool = True):
     ------------------
     - Creating and playing as a Keyboard Agent.ipynb
     - sb3/End to End Generic Env Example - Env Creation, Agent Train and Agent Rendering.ipynb
-    - sb3/Using an Evaluation Callback to monitor progress during Training.ipynb
+    - sb3/Using an Evaluation Callback to monitor progress during training.ipynb
 
     Args:
         overwrite_existing: A bool to toggle replacing existing edited

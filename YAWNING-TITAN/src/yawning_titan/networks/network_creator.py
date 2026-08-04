@@ -1,7 +1,7 @@
 """
 Network Creator module enables the creation of pre-defined types of networks.
 
-Network that can be created are:
+Networks that can be created are:
 
 - The standard 18-node network from the Ridley 2017 paper.
 - The DCBO network used in the RL Baseline module.

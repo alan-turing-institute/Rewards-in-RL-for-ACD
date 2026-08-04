@@ -5,7 +5,7 @@ logger = logging.getLogger(__name__)
 
 
 class SimpleBlue:
-    """An interface capable of Training a reinforcement learning agent in the `specific` environments."""
+    """An interface capable of training a reinforcement learning agent in the `specific` environments."""
 
     def __init__(self, n_machines=None):
         self.n_machines = n_machines

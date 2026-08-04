@@ -1,0 +1,8 @@
+# Presence of this file makes pip use the PEP 517/660 build backend by default.
+# That matters: the legacy `setup.py develop` path ignores the package_dir
+# mapping in setup.py, so `CybORG_plus_plus` ends up not importable and only
+# `mini_CAGE` lands on sys.path. setuptools >= 64 honours package_dir for
+# editable installs, so `pip install -e ./mini_cage_training` works as intended.
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"

@@ -405,6 +405,12 @@ class GenericNetworkEnv(gym.Env):
             # print(f'successes: {red_info[0]["Successes"]}')
             # print(f'blue action: {blue_action}')
 
+            if done:
+                notes["red_skill"] = getattr(
+                    self, "_current_red_skill",
+                    getattr(self.network_interface, "_current_red_skill", None)
+                )
+
             return self.env_observation, reward, done, notes
 
         elif self.step_agent_order == "Red_Blue":
@@ -754,9 +760,16 @@ class GenericNetworkEnv(gym.Env):
             if self.print_notes:
                 json_data = json.dumps(notes)
                 print(json_data)
+
+            if done:
+                notes["red_skill"] = getattr(
+                    self, "_current_red_skill",
+                    getattr(self.network_interface, "_current_red_skill", None)
+                )
             # Returns the environment information that AI gym uses and all of the information collected in a dictionary
             return self.env_observation, reward, done, notes
         else:
+            print(f"Invalid agent order: {self.step_agent_order}")
             raise ValueError("Invalid agent order input for GenericNetworkEnv")
         
 
