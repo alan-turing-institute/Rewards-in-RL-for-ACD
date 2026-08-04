@@ -146,7 +146,7 @@ pip install -e ./mini_cage_training
    ```
 
    **Weights & Biases** logging is controlled by `USE_WANDB`. We recommend
-   leaving it on to track your runs (metrics, configs, and saved models) — run
+   leaving it on to track your runs (metrics, configs, and saved models). You can run
    `wandb login` (or set `WANDB_API_KEY`) once beforehand. Set `USE_WANDB = False`
    to train without a W&B account or login, e.g. for a quick local trial.
 
@@ -184,9 +184,11 @@ pip install -e ./mini_cage_training
    ```
 
    `--reward_type` maps the paper's reward name to the trained reward function:
-   `"Positive Rewards"` → `simple_positive`, `"Negative Rewards"` → `simple_negative`,
-   `"Simple Positive and Negative Rewards"` → `simple_pos_neg`,
-   `"Dense Negative Rewards"` → `dense_negative`, `"Complex Dense Negative Rewards"` → `complex_dense_negative`.
+   1. simple_positive
+   2. simple_negative
+   3. simple_pos_neg
+   4. dense_negative
+   5. complex_dense_negative
 
 ---
 
@@ -203,6 +205,9 @@ pip install -e ./mini_cage_training
    TOTAL_TIMESTEPS = 2_500_000
    ```
 
+   As with Yawning Titan, W&B logging is on by default (`USE_WANDB = True` in the script) so run `wandb login` first, 
+   or set `USE_WANDB = False` to train without a W&B account.
+
 2. Choose PPO or DQN by commenting/uncommenting the relevant model block in the `train_worker` function.
 
 3. **Run training**:
@@ -211,6 +216,22 @@ pip install -e ./mini_cage_training
    cd mini_cage_training/Training
    python SB3_training.py
    ```
+
+## Citation
+
+If you use this code or build on our work, please cite the paper:
+
+```bibtex
+@inproceedings{beyond_rewards_acd_2026,
+  title     = {Beyond Rewards in Reinforcement Learning for Cyber Defence},
+  author    = {Bates, E. and Hicks, C. and Mavroudis, V.},
+  booktitle = {Proceedings of the International Conference on Machine Learning (ICML)},
+  year      = {2026},
+  note      = {To appear. Preprint: arXiv:2602.04809}
+}
+```
+
+---
 
 ## Acknowledgements
 
