@@ -46,9 +46,9 @@ NET_SHAPE = ['linear']
 NODE_COMBINATIONS = [5, 10]
 
 # Reward functions to train.
-# Options: 'scaffolded', 'complex_dense', 'simple_pos_neg', 'simple_positive', 'simple_negative'
-# Note: 'scaffolded' is the Dense Negative reward described in the paper.
-REWARD_FUNCTIONS = ['scaffolded', 'complex_dense', 'simple_pos_neg', 'simple_positive', 'simple_negative']
+# Options: 'simple_positive', 'simple_negative', 'simple_pos_neg', 'dense_negative', 'complex_dense_negative'
+# Note: 'dense_negative' is the Dense Negative reward and 'complex_dense_negative' the Complex Dense Negative reward from the paper.
+REWARD_FUNCTIONS = ['dense_negative', 'complex_dense_negative', 'simple_pos_neg', 'simple_positive', 'simple_negative']
 
 # Steps per episode
 N_STEPS = 100

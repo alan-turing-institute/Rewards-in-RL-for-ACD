@@ -12,13 +12,13 @@ def evaluate_combination(n_nodes, reward_type, agent_order, action_space):
             'function': 'simple_positive',
             'description': 'Positive rewards: +1 only when no Nodes are compromised',
         },
-        'Scaffolded Rewards': {
-            'function': 'scaffolded',
-            'description': 'Scaffolded rewards: -1 per compromised node per timestep',
+        'Dense Negative Rewards': {
+            'function': 'dense_negative',
+            'description': 'Dense negative rewards: -1 per compromised node per timestep',
         },
-        'Complex Dense Rewards': {
-            'function': 'complex_dense',
-            'description': 'Complex dense rewards use the standard reward function given in the YT codebase',
+        'Complex Dense Negative Rewards': {
+            'function': 'complex_dense_negative',
+            'description': 'Complex dense negative rewards use the standard reward function given in the YT codebase',
         },
         'Simple Positive and Negative Rewards': {
             'function': 'simple_pos_neg',

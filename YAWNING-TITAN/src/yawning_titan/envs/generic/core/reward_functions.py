@@ -593,7 +593,7 @@ def simple_pos_neg(args: dict) -> float:
 
     return reward
 
-def scaffolded(args: dict) -> float:
+def dense_negative(args: dict) -> float:
     """
     A reward function that penalizes the blue agent based on the number of compromised nodes.
 
@@ -797,7 +797,7 @@ def costly_scaffolded(args: dict) -> float:
 
     return reward
 
-def complex_dense(args: dict) -> float:
+def complex_dense_negative(args: dict) -> float:
     """
     Calculate the reward for the current state of the environment.
 
@@ -835,7 +835,7 @@ def complex_dense(args: dict) -> float:
 
     reward = -action_cost[blue_action]
 
-    # punish agent for every node that red has successfully compromised (scaffolded/dense rew function)
+    # punish agent for every node that red has successfully compromised (dense_negative/dense rew function)
     no_red_nodes_compromised = sum(end_state.values())
     reward += -no_red_nodes_compromised
 

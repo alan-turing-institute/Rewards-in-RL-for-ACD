@@ -79,8 +79,8 @@ REWARD_TO_HYPERPARAMS = {
     'simple_negative': NEGATIVE_RED_BLUE_HYPERPARAMETERS,
 
     'simple_pos_neg':  POSNEG_RED_BLUE_HYPERPARAMETERS,
-    'scaffolded':      SCAFFOLD_RED_BLUE_HYPERPARAMETERS,
-    # 'complex_dense':   COMPLEX_RED_BLUE_HYPERPARAMETERS
-    'complex_dense':   COMPLEX_RED_BLUE_HYPERPARAMETERS,
+    'dense_negative':       SCAFFOLD_RED_BLUE_HYPERPARAMETERS,
+    # 'complex_dense_negative':  COMPLEX_RED_BLUE_HYPERPARAMETERS
+    'complex_dense_negative':  COMPLEX_RED_BLUE_HYPERPARAMETERS,
     'missing_key':    POSITIVE_RED_BLUE_HYPERPARAMETERS
 }

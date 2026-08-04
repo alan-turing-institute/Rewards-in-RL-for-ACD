@@ -53,7 +53,7 @@ from rl_reliability_metrics.metrics import metrics_offline
 # NO_AGENTS, ORDER, ACTION_SPACE_SET).
 
 # Then go to the parallel_evaluation function and fill out the node_values (say 2, 5, 10, 20, 50) and reward_values (
-# say 'Negative Rewards', 'Positive Rewards', 'Scaffolded Rewards') with the agents you want to evaluate in parallel.
+# say 'Negative Rewards', 'Positive Rewards', 'Dense Negative Rewards') with the agents you want to evaluate in parallel.
 # (See utils for the reward function names config)
 # You should be good to run the script.
 
@@ -82,7 +82,7 @@ EVAL_TYPE = "intra_step_eval"  # this version is evaluating intra step-wise - gr
 # Select reward configuration
 # REWARD_TYPE = 'Negative Rewards'
 # REWARD_TYPE = 'Positive Rewards'
-# REWARD_TYPE = 'Scaffolded Rewards'
+# REWARD_TYPE = 'Dense Negative Rewards'
 # REWARD_TYPE = 'Costly Negative Rewards'
 # REWARD_TYPE = 'Costly Positive Rewards'
 # REWARD_TYPE = 'Costly Scaffolded Rewards'
@@ -770,8 +770,11 @@ def main(n_nodes, reward_function, reward_description, reward_type, order, actio
     """
     Main function to evaluate multiple trained agents on a network environment and plot the results.
     """
-    # Updating the JSON with the evaluation settings above
-    with open('Minimal_network_gamemode.json', 'r') as file:
+    # Updating the JSON with the evaluation settings above.
+    # Resolve the gamemode config from the Training dir so evaluation works
+    # regardless of the current working directory.
+    gamemode_path = _YT_TRAINING_ROOT / "Training" / "Minimal_network_gamemode.json"
+    with open(gamemode_path, 'r') as file:
         base_config = json.load(file)
 
     # Create a unique copy for each evaluation
@@ -1016,15 +1019,20 @@ def main(n_nodes, reward_function, reward_description, reward_type, order, actio
         action_nodes_red=action_nodes_red,
     )
 
-    # Generate HTML report with dynamic content
-    generate_html_from_template(
-        template_path='evaluation_template.html',
-        output_paths=[os.path.join(output_dir, f'{reward_function}_Rewards_{order}_{n_nodes}_Nodes.html')],
-        chart_filename=chart_filename,
-        eval_info=eval_info
-    )
-
-    print(f"Dashboard saved")
+    # Optionally render a combined HTML dashboard from a template. The template
+    # is not shipped with the repo, so skip gracefully when it is absent — all
+    # scores, CVaR values and the Plotly chart above are already saved.
+    template_path = _HERE / 'evaluation_template.html'
+    if os.path.exists(template_path):
+        generate_html_from_template(
+            template_path=str(template_path),
+            output_paths=[os.path.join(output_dir, f'{reward_function}_Rewards_{order}_{n_nodes}_Nodes.html')],
+            chart_filename=chart_filename,
+            eval_info=eval_info
+        )
+        print(f"Dashboard saved")
+    else:
+        print(f"(Skipping HTML dashboard: no template at {template_path})")
 
 
 def generate_html_from_template(template_path, output_paths, chart_filename, eval_info):
@@ -1078,8 +1086,8 @@ def parallel_evaluation():
     reward_types = [
         'Positive Rewards',
         # 'Negative Rewards',
-        # 'Scaffolded Rewards',
-        # 'Complex Dense Rewards',
+        # 'Dense Negative Rewards',
+        # 'Complex Dense Negative Rewards',
         # 'Simple Positive and Negative Rewards'
     ]
     action_space_set = ['simple_action_space', 'decoy_action_space']  # 'simple_action_space', 'decoy_action_space'
@@ -1186,8 +1194,8 @@ if __name__ == '__main__':
         reward_configs = {
             'Negative Rewards':                   {'function': 'simple_negative'},
             'Positive Rewards':                   {'function': 'simple_positive'},
-            'Scaffolded Rewards':                 {'function': 'scaffolded'},
-            'Complex Dense Rewards':              {'function': 'complex_dense'},
+            'Dense Negative Rewards':             {'function': 'dense_negative'},
+            'Complex Dense Negative Rewards':     {'function': 'complex_dense_negative'},
             'Simple Positive and Negative Rewards': {'function': 'simple_pos_neg'},
         }
         if cli_args.reward_function is not None:

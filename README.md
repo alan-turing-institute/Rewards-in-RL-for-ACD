@@ -137,7 +137,7 @@ pip install -e ./mini_cage_training
 
    NET_SHAPE         = ['linear']         # 'linear' or 'diamond'
    NODE_COMBINATIONS = [5, 10]            # network sizes
-   REWARD_FUNCTIONS  = ['scaffolded', 'complex_dense', 'simple_pos_neg',
+   REWARD_FUNCTIONS  = ['dense_negative', 'complex_dense_negative', 'simple_pos_neg',
                          'simple_positive', 'simple_negative']
    ORDER             = ["Red_Blue", "Blue_Red", "Balanced"]
    ACTION_SPACE_SET  = ["simple_action_space", "decoy_action_space"]
@@ -161,19 +161,32 @@ pip install -e ./mini_cage_training
    nohup python -u parallel_training.py > ../../nohup/run1.log 2>&1 &
    ```
 
-3. **Evaluate** trained models:
+3. **Evaluate** trained models. Run these from the `Evaluation/` directory, in order:
 
    ```bash
-   # Score-based evaluation (GT score, CVaR)
    cd yawning_titan_training/Evaluation
-   python Evaluation_score.py
 
-   # Reliability metrics (IQR - requires W&B login)
-   python Reliability_Evaluation.py
+   # (a) Score-based evaluation (ground-truth score + CVaR) for one set of agents.
+   #     Point --agent_dir at a trained PPO folder under results/train_log/ and pass
+   #     the matching --reward_type. Per-agent scores are written to results/eval_log/.
+   python Evaluation_score.py \
+       --agent_dir ../../results/train_log/simple_action_space/simple_positive/5_nodes/PPO \
+       --reward_type "Positive Rewards"
 
-   # Confidence intervals across agents
+   # (b) Confidence intervals across agents. Reads the scores written by (a) from
+   #     results/eval_log/ (override the location with the EVAL_ROOT env var).
    python Confidence_interval.py
+
+   # (c) Reliability metrics (IQR). Pulls run histories from Weights & Biases, so it
+   #     only works for runs trained with W&B enabled (USE_WANDB = True). Run
+   #     `wandb login` first, then set `entity` and `project` at the top of the script.
+   python Reliability_Evaluation.py
    ```
+
+   `--reward_type` maps the paper's reward name to the trained reward function:
+   `"Positive Rewards"` → `simple_positive`, `"Negative Rewards"` → `simple_negative`,
+   `"Simple Positive and Negative Rewards"` → `simple_pos_neg`,
+   `"Dense Negative Rewards"` → `dense_negative`, `"Complex Dense Negative Rewards"` → `complex_dense_negative`.
 
 ---
 
@@ -198,22 +211,6 @@ pip install -e ./mini_cage_training
    cd mini_cage_training/Training
    python SB3_training.py
    ```
-
----
-
-## Notes on reward functions
-
-| Name in code | Description in paper |
-|---|---|
-| `simple_positive` | Positive Rewards |
-| `simple_negative` | Negative Rewards |
-| `simple_pos_neg` | Simple Positive and Negative Rewards |
-| `scaffolded` | Dense Negative Rewards |
-| `complex_dense` | Complex Dense Rewards |
-
-The reward function implementations are in `YAWNING-TITAN/src/yawning_titan/envs/generic/core/reward_functions.py`. See `YAWNING-TITAN/CHANGES.md` for the full list of modifications to the upstream YT codebase.
-
----
 
 ## Acknowledgements
 

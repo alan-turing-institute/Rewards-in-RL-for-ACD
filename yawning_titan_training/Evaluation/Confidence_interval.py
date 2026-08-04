@@ -35,7 +35,7 @@ OUTPUT_FILE = ROOT_DIR / 'confidence_intervals_summary.json'
 AGENT_ORDERS = ['Balanced', 'Red_Blue', 'Blue_Red']
 REWARD_FUNCS = [
     'simple_positive', 'simple_negative', 'simple_pos_neg',
-    'scaffolded', 'complex_dense',
+    'dense_negative', 'complex_dense_negative',
 ]
 NODE_SIZES   = ['2_nodes', '5_nodes', '10_nodes', '20_nodes', '50_nodes']
 ACTION_SPACES = ['simple_action_space', 'decoy_action_space']
@@ -97,7 +97,9 @@ def load_agent_scores(path: Path):
 
 def process_all():
     summary = {}
-    base_eval_dir = ROOT_DIR / 'eval_log' / 'intra_step_eval'
+    # Evaluation_score.py writes per-agent scores under
+    #   eval_log/<action_space>/<reward>/<N_nodes>/<algorithm>/Eval_scores_per_agent_<order>.json
+    base_eval_dir = ROOT_DIR / 'eval_log'
 
     for action_space in ACTION_SPACES:
         action_path = base_eval_dir / action_space
@@ -121,7 +123,14 @@ def process_all():
 
                 summary[action_space][reward][node_size] = {}
                 for order in AGENT_ORDERS:
-                    score_file = node_path / f'Eval_scores_per_agent_{order}.json'
+                    # Scores are written under the algorithm subdir (e.g. PPO/);
+                    # fall back to the node dir for older flat layouts.
+                    candidates = [
+                        node_path / 'PPO' / f'Eval_scores_per_agent_{order}.json',
+                        node_path / 'DQN' / f'Eval_scores_per_agent_{order}.json',
+                        node_path / f'Eval_scores_per_agent_{order}.json',
+                    ]
+                    score_file = next((c for c in candidates if c.exists()), candidates[0])
                     scores = load_agent_scores(score_file)
                     if not scores:
                         # problem already reported
