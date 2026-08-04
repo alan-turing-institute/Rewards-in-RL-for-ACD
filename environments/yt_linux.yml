@@ -5,6 +5,14 @@ channels:
   - https://software.repos.intel.com/python/conda/
 dependencies:
   - pip==24.0
+  - # gym 0.21.0 ships a setup.py that setuptools >=66 rejects with
+  - #   "error in gym setup command: 'extras_require' must be a dictionary ..."
+  - # It has no pyproject.toml, so pip builds it with the *environment's*
+  - # setuptools (no build isolation). These must be installed by conda, before
+  - # the pip section runs, and must not be overridden by a pip-level pin.
+  - # Same pins as docker/Dockerfile.yt.
+  - setuptools=65.5.0
+  - wheel=0.38.4
   - _libgcc_mutex=0.1=main
   - _openmp_mutex=5.1=1_gnu
   - blas=1.0=mkl
@@ -197,7 +205,6 @@ dependencies:
       - send2trash==1.8.3
       - sentry-sdk==2.20.0
       - setproctitle==1.3.4
-      - setuptools==75.8.0
       - shellingham==1.5.4
       - six==1.17.0
       - smart-open==7.1.0
@@ -233,7 +240,6 @@ dependencies:
       - webencodings==0.5.1
       - websocket-client==1.8.0
       - werkzeug==3.1.3
-      - wheel==0.45.1
       - wrapt==1.17.2
       - y-py==0.6.2
       - ypy-websocket==0.8.4
